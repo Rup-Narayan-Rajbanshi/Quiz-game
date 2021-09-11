@@ -34,7 +34,7 @@ def login_view(request):
 		user=authenticate(username=username, password=password)
 		login(request,user)
 
-		return HttpResponseRedirect(reverse('index'))
+		return HttpResponseRedirect(reverse('home'))
 
 
 	context = {'form':form}
@@ -52,7 +52,7 @@ def user_update_view(request,id):
 		user=form.save(commit=False)
 		user.save()
 
-		return HttpResponseRedirect(reverse('index'))
+		return HttpResponseRedirect(reverse('home'))
 	else:
 		form=EditUserForm(request.POST or None,instance=instance)
 

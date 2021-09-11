@@ -42,6 +42,7 @@ THIRD_PARTY_APPS = [
 
 DEV_APPS = [
     'user',
+    'trivia_game',
 ]
 
 INSTALLED_APPS = INTERNAL_APPS + THIRD_PARTY_APPS + DEV_APPS

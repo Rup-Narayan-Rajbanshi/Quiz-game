@@ -38,16 +38,18 @@
                 <div id="login-column" class="col-md-6">
                     <div id="login-box" class="col-md-12">
                         <form id="login-form" class="form" action="" method="post">{% csrf_token %}
-                          {% if form.errors %}
+                         
+                            <h3 class="text-center text-info">Login</h3>
+                            {% if form.errors %}
                             {% for field in form %}
                                 {% for error in field.errors %} 
                                   <div class="alert alert-danger">
                                         <strong>{{ error|escape }}</strong>
                                   </div>
-                                {% endfor %}
-                            {% endfor %}
-                          {% endif %}
-                            <h3 class="text-center text-info">Login</h3>
+                                  {% endfor %}
+                              {% endfor %}
+                            {% endif %}
+                            
                             <div class="form-group">
                                 <label for="username" class="text-info">Username:</label><br>
                                 {{form.username|as_crispy_field}}
