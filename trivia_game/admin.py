@@ -18,7 +18,7 @@ class AnswerInline(nested_admin.NestedTabularInline):
 #     inlines = [AnswerInline,]
 #     extra = 19
 
-class GameAdmin(nested_admin.NestedModelAdmin):
+class QuistionAdmin(nested_admin.NestedModelAdmin):
     inlines = [AnswerInline,]
 
 # class UserAnswerInline(admin.TabularInline):
@@ -28,7 +28,9 @@ class GameAdmin(nested_admin.NestedModelAdmin):
 # class UserGameAdmin(admin.ModelAdmin):
 #     inlines = [UserAnswerInline,]
 
-admin.site.register(Question, GameAdmin)
+admin.site.register(Question, QuistionAdmin)
 # admin.site.register(UserGame, UserGameAdmin)
-# admin.site.register(UserAnswer)
+admin.site.register(Game)
+admin.site.register(UserGame)
+admin.site.register(UserAnswer)
 

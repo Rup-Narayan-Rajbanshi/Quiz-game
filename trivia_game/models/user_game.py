@@ -6,13 +6,14 @@ User = get_user_model()
 from .game import Game
 
 class UserGame(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_game',)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='user_game',)
+    is_active = models.BooleanField(default=True)
     correct_answers = models.IntegerField(default=0)
     # completed = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username
+        return str(self.user.username)
 
 
 # # Create your models here.

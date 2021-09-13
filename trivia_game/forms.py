@@ -1,18 +1,28 @@
 from django import forms
 from trivia_game.models.question import Question
+from trivia_game.models.user_answer import UserAnswer
 from trivia_game.models.answer import Answer
 from django.contrib.auth import authenticate, get_user_model
 
 User = get_user_model()
 
-class AddQuestionForm(forms.ModelForm):
-	# confirm_password=forms.CharField(label='Confirm Password')
+class SubmitAnswerForm(forms.Form):
+	answer_option = forms.CharField()
+
+	# class Meta:
+	# 	model = UserAnswer
+	# 	fields = [
+	# 		'answer_option',
+	# 		]
+
+# class AddQuestionForm(forms.ModelForm):
+# 	# confirm_password=forms.CharField(label='Confirm Password')
     
-	class Meta:
-		model = Question
-		fields = [
-			'name','order',
-			]
+# 	class Meta:
+# 		model = Question
+# 		fields = [
+# 			'name','order',
+# 			]
 
 	# def clean(self,*args,**kwargs):
 		# password = self.cleaned_data.get('password')
@@ -31,10 +41,10 @@ class AddQuestionForm(forms.ModelForm):
 		# code.interact(local = dict(globals(), **locals()))
         # pass
 
-class AddAnswerForm(forms.ModelForm):
+# class AddAnswerForm(forms.ModelForm):
 
-    class Meta:
-        model = Answer
-        fields = [
-            'text', 'is_correct',
-            ]
+#     class Meta:
+#         model = Answer
+#         fields = [
+#             'text', 'is_correct',
+#             ]

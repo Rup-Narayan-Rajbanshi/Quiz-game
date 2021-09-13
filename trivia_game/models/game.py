@@ -10,4 +10,4 @@ class Game(BaseModel):
         ordering = ['created_at',]
 
     def __str__(self):
-        return self.questions_count
+        return str(self.id)
