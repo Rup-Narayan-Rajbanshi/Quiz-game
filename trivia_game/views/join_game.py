@@ -1,40 +1,56 @@
-from django.shortcuts import redirect,render
-from django.contrib.auth import login,logout,authenticate
 from trivia_game.forms import *
 from trivia_game.models.game import Game
 from trivia_game.models.user_game import UserGame
 from trivia_game.models.answer import Answer
 from trivia_game.models.user_answer import UserAnswer
 from trivia_game.models.score import Score
-# from .models import *
+
 from django.http import HttpResponse
+from django.contrib import messages
+from django.db.models import Count
+from django.shortcuts import redirect,render
+from django.db.models import Q
 
 def join_game(request):
     user = request.user
-    score = 0
-    game_exist = Game.objects.filter(is_active=True).exists()
-    if game_exist == True:
-        print("game_exists")
-        game = Game.objects.filter(is_active=True).first()
+    game_exist = Game.objects.filter(is_active=True, is_housefull=False).exists()
+
+    user_active_in_existing_game = UserGame.objects.filter(user=user, is_active=True).exists()
+    print(user_active_in_existing_game)
+    if user_active_in_existing_game:
+        print('0')
+        user_game=UserGame.objects.get(user=user, is_active=True)
+        game = user_game.game
+
+    elif game_exist == True:
+        print("1")
+        game = Game.objects.filter(is_active=True,is_housefull=False).first()
         user_game, created = UserGame.objects.get_or_create(user=user, game=game, is_active=True)
-        print(user_game)
-        print(created)
+
+        user_game_count = UserGame.objects.filter(game=game).count()
+        print(user_game_count)
+        if user_game_count == game.no_of_participants:
+            game.update(is_housefull=True)
+
     else:
-        print("new game")
+        print("2")
         game = Game.objects.create()
+        user_active_game = UserGame.objects.filter(user=user, is_active=True)
+        if not user_active_game==None:
+            user_active_game.delete()
         user_game = UserGame.objects.create(user=user, game=game)
 
+    print(user_game)
     user_question_answer_obj = UserAnswer.objects.filter(user_game=user_game,answer=None).first()
     print(user_question_answer_obj)
 
     if not user_question_answer_obj == None:
-        print("Inside if")
+        print("3")
         user_question_answer_obj = UserAnswer.objects.filter(user_game=user_game,answer=None).first()
 
         question = user_question_answer_obj.question
         answers = Answer.objects.filter(question=question)
         right_answer = answers.filter(is_correct=True).first()
-        print(right_answer)
         next_question = Question.objects.filter(id__gt=question.id).order_by('id').first()
 
         form=SubmitAnswerForm()
@@ -52,9 +68,8 @@ def join_game(request):
             
 
                 if user_question_answer_obj.answer == right_answer:
-                    print(score)
                     score_obj,created = Score.objects.get_or_create(user_game=user_game)
-                    score_obj.score = score_obj.score + 1
+                    score_obj.score = score_obj.score + question.marks
                     score_obj.save()
                 else:
                     score_obj,created = Score.objects.get_or_create(user_game=user_game)
@@ -62,33 +77,34 @@ def join_game(request):
                     score_obj.save()
                     user_game.is_active=False
                     user_game.save()
+                    messages.success(request,'Wrong Answer')
                     return redirect('trivia_game:score')
 
                        
                 try :
-                    print("try")
-                    user_question_answer_obj, created = UserAnswer.objects.get_or_create(user_game=user_game, question=next_question)
-                    print(created)
-                    print("user_answer_obj= ",user_question_answer_obj)              
+                    user_question_answer_obj, created = UserAnswer.objects.get_or_create(user_game=user_game, question=next_question)            
                 except:
-                    return redirect('trivia-game:score')
+                    messages.success(request,'Congratulation You are a Winner')
+                    score_obj.is_winner=True
+                    score_obj.save()
+                    user_game.is_active=False
+                    user_game.save()
+                    return redirect('trivia_game:score')
 
                 return redirect('trivia_game:join-game')
 
         context={
+            'form':form,
             'question':question,
             'a':answers[0],
             'b':answers[1],
             'c':answers[2],
             'd':answers[3],
-            'form':form,
-            # 'score':score_obj.score if score_obj.score else '0'
-            }
+            'user_answers':Answer.objects.filter(question=question).annotate(ans=Count('useranswer', Q(useranswer__user_game__game=game))),
+        }
+
     else:
         context={}
         return render(request,'game/question.html',context)
-    print("context=",context)
-
-        
 
     return render(request,'game/question.html',context)

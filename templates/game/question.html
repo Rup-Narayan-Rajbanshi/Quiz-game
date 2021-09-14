@@ -19,6 +19,18 @@
 {% endif %}
 
 <br>
-{{score}}
+{{user_answer_counts}}
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Sl.No</th>
+        <th>Number of Participants</th>
+        <th>Answer Selected</th>
+    </tr>
+    <tr>{% for user_answer in user_answers %}
+        <td></td>
+        <td>{{user_answer.ans}}</td>
+        <td>{{user_answer}}</td>
+    </tr> {% endfor %}
+</table>
 
 {% endblock %}

@@ -4,18 +4,27 @@
 
 <h1>Game Score</h1>
 <br>
+<br>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <h3 style="color: red;" {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </h3>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <table border="1" cellpadding="10">
     <tr>
         <th>Sl.No</th>
         <th>Score</th>
-        <th>Date</th>
+        <th>Status</th>
     </tr>
     <tr>{% for score in scores %}
         <td></td>
         <td>{{score}}</td>
-        <td>{{score.created_at}}</td>
-        {% endfor %}
-    </tr>
+        <td>{% if score.is_winner %} Winner {% else %} Looser {% endif %}</td>
+    </tr> {% endfor %}
 </table>
 
 {% endblock %}

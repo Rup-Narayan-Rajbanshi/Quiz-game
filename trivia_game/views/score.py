@@ -10,7 +10,6 @@ from django.http import HttpResponse
 
 def score(request):
     scores = Score.objects.filter(user_game__user=request.user)
-    
     context = {
         'scores':scores
     }
