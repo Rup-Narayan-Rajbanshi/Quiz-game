@@ -5,6 +5,7 @@ from trivia_game.models.game import Game
 from trivia_game.models.user_game import UserGame
 from trivia_game.models.answer import Answer
 from trivia_game.models.user_answer import UserAnswer
+from trivia_game.models.score import Score
 # from .models import *
 from django.http import HttpResponse
 
@@ -51,11 +52,18 @@ def join_game(request):
             
 
                 if user_question_answer_obj.answer == right_answer:
-                    score = score + 1
                     print(score)
+                    score_obj,created = Score.objects.get_or_create(user_game=user_game)
+                    score_obj.score = score_obj.score + 1
+                    score_obj.save()
                 else:
+                    score_obj,created = Score.objects.get_or_create(user_game=user_game)
+                    score_obj.score = score_obj.score
+                    score_obj.save()
                     user_game.is_active=False
                     user_game.save()
+                    return redirect('trivia_game:score')
+
                        
                 try :
                     print("try")
@@ -63,9 +71,8 @@ def join_game(request):
                     print(created)
                     print("user_answer_obj= ",user_question_answer_obj)              
                 except:
-                    return redirect('home')
+                    return redirect('trivia-game:score')
 
-                # return render(request,'game/question.html',context)
                 return redirect('trivia_game:join-game')
 
         context={
@@ -75,7 +82,7 @@ def join_game(request):
             'c':answers[2],
             'd':answers[3],
             'form':form,
-            'score':score
+            # 'score':score_obj.score if score_obj.score else '0'
             }
     else:
         context={}

@@ -4,6 +4,7 @@ from trivia_game.models.user_game import UserGame
 from trivia_game.models.question import Question
 from trivia_game.models.answer import Answer
 from trivia_game.models.user_answer import UserAnswer
+from trivia_game.models.score import Score
 
 import nested_admin
 
@@ -33,4 +34,5 @@ admin.site.register(Question, QuistionAdmin)
 admin.site.register(Game)
 admin.site.register(UserGame)
 admin.site.register(UserAnswer)
+admin.site.register(Score)
 

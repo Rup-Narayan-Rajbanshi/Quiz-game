@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<h1>Game Score</h1>
+<br>
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Sl.No</th>
+        <th>Score</th>
+        <th>Date</th>
+    </tr>
+    <tr>{% for score in scores %}
+        <td></td>
+        <td>{{score}}</td>
+        <td>{{score.created_at}}</td>
+        {% endfor %}
+    </tr>
+</table>
+
+{% endblock %}
