@@ -40,6 +40,7 @@ THIRD_PARTY_APPS = [
     'crispy_forms',
     'nested_admin',
     'django_extensions',
+    'channels',
 ]
 
 DEV_APPS = [
@@ -79,7 +80,18 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'project.wsgi.application'
+# WSGI_APPLICATION = 'project.wsgi.application'
+ASGI_APPLICATION = 'project.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
+        },
+        # 'ROUTING': 'project.routing.channel_routing',
+    }
+}
 
 
 # Database
