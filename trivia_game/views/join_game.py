@@ -4,6 +4,7 @@ from trivia_game.models.user_game import UserGame
 from trivia_game.models.answer import Answer
 from trivia_game.models.user_answer import UserAnswer
 from trivia_game.models.score import Score
+from trivia_game.utils.start_game import start_game
 
 from django.http import HttpResponse
 from django.contrib import messages
@@ -16,36 +17,30 @@ def join_game(request):
     game_exist = Game.objects.filter(is_active=True, is_housefull=False).exists()
 
     user_active_in_existing_game = UserGame.objects.filter(user=user, is_active=True).exists()
-    print(user_active_in_existing_game)
     if user_active_in_existing_game:
-        print('0')
         user_game=UserGame.objects.get(user=user, is_active=True)
         game = user_game.game
 
     elif game_exist == True:
-        print("1")
         game = Game.objects.filter(is_active=True,is_housefull=False).first()
         user_game, created = UserGame.objects.get_or_create(user=user, game=game, is_active=True)
 
         user_game_count = UserGame.objects.filter(game=game).count()
-        print(user_game_count)
         if user_game_count == game.no_of_participants:
             game.update(is_housefull=True)
+            start_game()
 
     else:
-        print("2")
         game = Game.objects.create()
         user_active_game = UserGame.objects.filter(user=user, is_active=True)
         if not user_active_game==None:
             user_active_game.delete()
         user_game = UserGame.objects.create(user=user, game=game)
 
-    print(user_game)
     user_question_answer_obj = UserAnswer.objects.filter(user_game=user_game,answer=None).first()
-    print(user_question_answer_obj)
 
+    form=SubmitAnswerForm()
     if not user_question_answer_obj == None:
-        print("3")
         user_question_answer_obj = UserAnswer.objects.filter(user_game=user_game,answer=None).first()
 
         question = user_question_answer_obj.question
@@ -104,7 +99,7 @@ def join_game(request):
         }
 
     else:
-        context={}
+        context={'form':form}
         return render(request,'game/question.html',context)
 
     return render(request,'game/question.html',context)

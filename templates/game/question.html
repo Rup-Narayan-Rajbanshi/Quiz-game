@@ -3,21 +3,10 @@
 {% block content %}
 
 <h1>Thank you for joining the Game</h1>
-{% if question %}
-    {{question.order}}.{{question}}<br>
-    <p>a. {{a}}</p>
-    <p>b. {{b}}</p>
-    <p>c. {{c}}</p>
-    <p>d. {{d}}</p>
-
-
-<form method="post" enctype="multipart/form-data">{% csrf_token %}
-    {{form|crispy}}
-    <input type="submit" name="submit" value="Submit" class="btn btn-success">
-</form>
-
-{% endif %}
-
+<br>
+<div id ='question_data'>
+    
+</div>
 <br>
 {{user_answer_counts}}
 <table border="1" cellpadding="10">
@@ -34,3 +23,68 @@
 </table>
 
 {% endblock %}
+
+{% block js %}
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<script>
+    var url = 'ws://localhost:8000/ws/new/'
+    var socket = new WebSocket(url);
+
+    socket.onopen = function(e){
+        console.log("Socket Connected")
+    }
+
+
+    socket.onmessage = function(e){
+        var data = JSON.parse(e.data);
+        console.log(data)
+        if (data.payload){
+            addData(data.payload)
+
+            setTimeout(function() {
+                console.log('Running Delay')
+                $('#question_data').fadeOut();}, 10000); // <-- time in milliseconds
+
+    }
+        }
+
+        
+    socket.onclose = function(e){
+        console.log("Socket Disconnected")
+    }
+
+
+    function addData(data){
+        var html =`
+        <ol>
+            <li>${data.question}</li>
+            <li>${data.a}</li>
+            <li>${data.b}</li>
+            <li>${data.c}</li>
+            <li>${data.d}</li>
+        </ol>
+        <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+        {{form|crispy}}
+        <input type="submit" name="submit" value="Submit" class="btn btn-success">
+        </form>
+        `
+        document.getElementById('question_data').innerHTML = html
+    }
+
+</script>
+
+{% endblock js %}
+
+{% if question %}
+    {{question.order}}.{{question}}<br>
+    <p>a. {{a}}</p>
+    <p>b. {{b}}</p>
+    <p>c. {{c}}</p>
+    <p>d. {{d}}</p>
+{% endif %}
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+    {{form|crispy}}
+    <input type="submit" name="submit" value="Submit" class="btn btn-success">
+</form>

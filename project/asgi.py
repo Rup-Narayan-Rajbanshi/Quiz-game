@@ -22,7 +22,7 @@ from trivia_game.consumers import *
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings.dev')
 
 ws_patterns = [
-    path('ws/test/',TestConsumer.as_asgi())
+    path('ws/new/',NewConsumers.as_asgi())
 ]
 
 application = ProtocolTypeRouter({
@@ -34,9 +34,3 @@ application = ProtocolTypeRouter({
     ),
     # Just HTTP for now. (We can add other protocols later.)
 })
-
-
-
-# application = ProtocolTypeRouter({
-#     'websocket':URLRouter(ws_patterns)
-# })
