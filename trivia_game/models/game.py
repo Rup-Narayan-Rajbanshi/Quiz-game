@@ -2,8 +2,8 @@ from django.db import models
 from helpers.models import BaseModel
 
 class Game(BaseModel):
-    questions_count = models.IntegerField(default=0)
-    no_of_participants = models.IntegerField(default=10)
+    # questions_count = models.IntegerField(default=0)
+    no_of_participants = models.IntegerField(default=2)
     is_active = models.BooleanField(default=True)
     is_housefull = models.BooleanField(default=False)
 

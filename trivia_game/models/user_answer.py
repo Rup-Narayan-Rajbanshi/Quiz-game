@@ -4,6 +4,11 @@ from .user_game import UserGame
 from .question import Question
 from .answer import Answer
 from .score import Score
+# from trivia_game.threads import *
+
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+import json
 
 class UserAnswer(BaseModel):
     user_game = models.ForeignKey(UserGame, on_delete=models.CASCADE)
@@ -12,7 +17,7 @@ class UserAnswer(BaseModel):
     is_correct = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.user_game.user.username)
+        return str(self.user_game.user.id)
 
     def get_answer_is_correct(self):
         if not self.answer == None:

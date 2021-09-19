@@ -5,20 +5,24 @@ from trivia_game.models.answer import Answer
 from trivia_game.models.user_answer import UserAnswer
 from trivia_game.models.score import Score
 from trivia_game.utils.start_game import start_game
+from trivia_game.threads import AnswerChoiceThread
 
 from django.http import HttpResponse
 from django.contrib import messages
-from django.db.models import Count
+from django.db.models import Count, Max
 from django.shortcuts import redirect,render
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
+
+@login_required(login_url='/user/login/')
 def join_game(request):
     user = request.user
     game_exist = Game.objects.filter(is_active=True, is_housefull=False).exists()
 
     user_active_in_existing_game = UserGame.objects.filter(user=user, is_active=True).exists()
     if user_active_in_existing_game:
-        user_game=UserGame.objects.get(user=user, is_active=True)
+        user_game=UserGame.objects.filter(user=user, is_active=True).first()
         game = user_game.game
 
     elif game_exist == True:
@@ -28,13 +32,11 @@ def join_game(request):
         user_game_count = UserGame.objects.filter(game=game).count()
         if user_game_count == game.no_of_participants:
             game.update(is_housefull=True)
-            start_game()
+            start_game(game)
 
     else:
         game = Game.objects.create()
-        user_active_game = UserGame.objects.filter(user=user, is_active=True)
-        if not user_active_game==None:
-            user_active_game.delete()
+        user_active_game = UserGame.objects.filter(user=user, is_active=True).update(is_active=False)
         user_game = UserGame.objects.create(user=user, game=game)
 
     user_question_answer_obj = UserAnswer.objects.filter(user_game=user_game,answer=None).first()
@@ -60,19 +62,23 @@ def join_game(request):
                     user_question_answer_obj.update(answer=answers[2])
                 else:
                     user_question_answer_obj.update(answer=answers[3])
+
+                AnswerChoiceThread(user, question).start()
             
 
                 if user_question_answer_obj.answer == right_answer:
                     score_obj,created = Score.objects.get_or_create(user_game=user_game)
                     score_obj.score = score_obj.score + question.marks
                     score_obj.save()
+                    
                 else:
                     score_obj,created = Score.objects.get_or_create(user_game=user_game)
                     score_obj.score = score_obj.score
                     score_obj.save()
+
                     user_game.is_active=False
                     user_game.save()
-                    messages.success(request,'Wrong Answer')
+                    messages.success(request,'Wrong Answer. You are Terminated')
                     return redirect('trivia_game:score')
 
                        
@@ -82,8 +88,8 @@ def join_game(request):
                     messages.success(request,'Congratulation You are a Winner')
                     score_obj.is_winner=True
                     score_obj.save()
-                    user_game.is_active=False
-                    user_game.save()
+                    user_games = UserGame.objects.filter(game=game).update(is_active=False)
+                    game = game.update(is_active=False)
                     return redirect('trivia_game:score')
 
                 return redirect('trivia_game:join-game')
@@ -96,10 +102,14 @@ def join_game(request):
             'c':answers[2],
             'd':answers[3],
             'user_answers':Answer.objects.filter(question=question).annotate(ans=Count('useranswer', Q(useranswer__user_game__game=game))),
+            'user':request.user.username,
+            'question_id':question.id if question else Question.objects.all().first().id,
         }
-
     else:
-        context={'form':form}
+        context={
+                'form':form,
+                'question_id':Question.objects.all().first().id,
+                }
         return render(request,'game/question.html',context)
 
     return render(request,'game/question.html',context)

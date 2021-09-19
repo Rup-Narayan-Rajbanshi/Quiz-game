@@ -26,3 +26,11 @@ class NewConsumers(AsyncJsonWebsocketConsumer):
         data = json.loads(event.get('value'))
         await self.send(text_data=json.dumps({'payload':data}))
 
+
+    async def get_answer_choice(self, event):
+        print(event)
+        data = json.loads(event.get('value'))
+        await self.send(text_data=json.dumps({'payload2':data}))
+
+
+

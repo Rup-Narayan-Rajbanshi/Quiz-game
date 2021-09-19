@@ -1,30 +1,49 @@
 {% extends 'base.html'%}
 {% load crispy_forms_tags %}
+
+{% block css %}
+<style>
+    th,td {
+        color: white;
+    }
+</style>
+
+{% endblock css %}
 {% block content %}
+<section id="hero" class="d-flex align-items-center">
 
-<h1>Game Score</h1>
-<br>
-<br>
-
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <h3 style="color: red;" {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </h3>
-    {% endfor %}
-</ul>
-{% endif %}
-
-<table border="1" cellpadding="10">
-    <tr>
-        <th>Sl.No</th>
-        <th>Score</th>
-        <th>Status</th>
-    </tr>
-    <tr>{% for score in scores %}
-        <td></td>
-        <td>{{score}}</td>
-        <td>{% if score.is_winner %} Winner {% else %} Looser {% endif %}</td>
-    </tr> {% endfor %}
-</table>
-
+  <div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            {% if messages %}
+                <ul class="messages">
+            {% for message in messages %}
+                <h3 style="color: red;" {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </h3>
+            {% endfor %}
+                </ul>
+            {% endif %}
+            <table cellpadding="10">
+                <tr>
+                    <th>Sl.No</th>
+                    <th>Score</th>
+                    <th> Game Status</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+                <tr>{% for score in scores %}
+                    <td></td>
+                    <td>{{score}}</td>
+                    <td>{% if score.user_game.game.is_active %} Active {% else %} Completed {% endif %}</td>
+                    <td>{% if score.is_winner %} Winner {% endif %}</td>
+                    <td>{{score.modified_at}}</td>
+                </tr> {% endfor %}
+            </table>
+        </div>
+    </div>
+  </div>
+</section><!-- End Hero -->
 {% endblock %}
+
+
+
+<td>{% if score.is_winner %} Winner {% else %} Looser {% endif %}</td>

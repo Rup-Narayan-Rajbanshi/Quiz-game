@@ -9,9 +9,6 @@ class UserGame(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_game',)
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='user_game',)
     is_active = models.BooleanField(default=True)
-    correct_answers = models.IntegerField(default=0)
+    
     def __str__(self):
         return str(self.user.username)
-
-    # def save(self, *args, **kwagrs):
-    #     super(UserGame,self).save(*args, **kwagrs)

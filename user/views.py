@@ -16,6 +16,9 @@ def register_view(request):
 		user.set_password(password)
 		user.save()
 
+		user=authenticate(username=user.username, password=password)
+		login(request,user)
+
 		return HttpResponseRedirect(reverse('home'))
 
 	context={
@@ -60,4 +63,4 @@ def user_update_view(request,id):
 		'form':form,
 	}
 
-	return render(request,'user/register.html',context=context)
+	return render(request,'user/update.html',context=context)
