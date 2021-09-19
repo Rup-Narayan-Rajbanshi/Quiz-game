@@ -3,7 +3,7 @@ from .base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://rup-game.herokuapp.com/','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['rup-game.herokuapp.com','localhost','127.0.0.1']
 
 
 DATABASES = {
