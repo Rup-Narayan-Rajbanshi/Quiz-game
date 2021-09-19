@@ -1,9 +1,9 @@
 from .base import *
 # from decouple import config
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['https://rup-game.herokuapp.com/','localhost']
+ALLOWED_HOSTS = ['https://rup-game.herokuapp.com/','localhost','127.0.0.1']
 
 
 DATABASES = {
@@ -13,8 +13,8 @@ DATABASES = {
     }
 }
 
-# add this
-import dj_database_url
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
-DATABASES['default']['CONN_MAX_AGE'] = 500
+# # add this
+# import dj_database_url
+# db_from_env = dj_database_url.config()
+# DATABASES['default'].update(db_from_env)
+# DATABASES['default']['CONN_MAX_AGE'] = 500

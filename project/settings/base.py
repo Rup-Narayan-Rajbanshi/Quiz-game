@@ -18,7 +18,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = 'django-insecure-4*z_grdw(&znvcp$cme@zh$^w)%9pvk(v9ad055lfp3_%*l7i1'
 
 
 # Quick-start development settings - unsuitable for production
@@ -54,7 +54,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.security.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.security.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -152,8 +152,8 @@ STATICFILES_DIRS = [
     # '/var/www/static/',
 ]
 
-STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR),"static_cdn")
+STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR),"live-static-files","static-root")
 
-MEDIA_URL= '/media_cdn/'
+MEDIA_URL= '/media/'
  
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR),"media_cdn")
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR),"live-static-files","media-root")
