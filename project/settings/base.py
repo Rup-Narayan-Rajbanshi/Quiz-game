@@ -18,7 +18,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-4*z_grdw(&znvcp$cme@zh$^w)%9pvk(v9ad055lfp3_%*l7i1'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 
 # Quick-start development settings - unsuitable for production
@@ -152,7 +152,7 @@ STATICFILES_DIRS = [
     # '/var/www/static/',
 ]
 
-STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR),"live-static-files","static-root")
+STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR),"staticfiles")
 
 MEDIA_URL= '/media/'
  
