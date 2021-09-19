@@ -54,7 +54,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # 'whitenoise.middleware.security.WhiteNoiseMiddleware',
+    'whitenoise.middleware.security.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -149,24 +149,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_ROOT= os.path.join(BASE_DIR,'staticfiles/')
 
 STATICFILES_DIRS = ()
-
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "static"),
-#     # '/var/www/static/',
-# ]
-
-
-# PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-
-# STATIC_ROOT= os.path.join(PROJECT_DIR,'staticfiles/')
-
-# STATICFILES_DIRS = (
-#     os.path.join(PROJECT_ROOT,'static/'),
-# )
-
-
-
-# STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR),"staticfiles")
 
 MEDIA_URL= '/media/'
  
