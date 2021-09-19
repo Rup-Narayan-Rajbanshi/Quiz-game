@@ -1,9 +1,9 @@
 from .base import *
 from decouple import config
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['https://rup-game.herokuapp.com/','localhost']
 
 
 DATABASES = {

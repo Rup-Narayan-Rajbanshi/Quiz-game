@@ -19,14 +19,14 @@ from django.contrib.auth.decorators import login_required
 def join_game(request):
     user = request.user
     game_exist = Game.objects.filter(is_active=True, is_housefull=False).exists()
-
     user_active_in_existing_game = UserGame.objects.filter(user=user, is_active=True).exists()
+
     if user_active_in_existing_game:
         user_game=UserGame.objects.filter(user=user, is_active=True).first()
         game = user_game.game
 
-    elif game_exist == True:
-        game = Game.objects.filter(is_active=True,is_housefull=False).first()
+    elif game_exist:
+        game = Game.objects.filter(is_active=True, is_housefull=False).first()
         user_game, created = UserGame.objects.get_or_create(user=user, game=game, is_active=True)
 
         user_game_count = UserGame.objects.filter(game=game).count()
@@ -39,11 +39,11 @@ def join_game(request):
         user_active_game = UserGame.objects.filter(user=user, is_active=True).update(is_active=False)
         user_game = UserGame.objects.create(user=user, game=game)
 
-    user_question_answer_obj = UserAnswer.objects.filter(user_game=user_game,answer=None).first()
+    user_question_answer_obj = UserAnswer.objects.filter(user_game=user_game, answer=None).first()
 
     form=SubmitAnswerForm()
     if not user_question_answer_obj == None:
-        user_question_answer_obj = UserAnswer.objects.filter(user_game=user_game,answer=None).first()
+        # user_question_answer_obj = UserAnswer.objects.filter(user_game=user_game,answer=None).first()
 
         question = user_question_answer_obj.question
         answers = Answer.objects.filter(question=question)
@@ -63,22 +63,27 @@ def join_game(request):
                 else:
                     user_question_answer_obj.update(answer=answers[3])
 
+                # update which user choosed each answer
                 AnswerChoiceThread(user, question).start()
             
-
+                # Update Score on selecting right answer
                 if user_question_answer_obj.answer == right_answer:
                     score_obj,created = Score.objects.get_or_create(user_game=user_game)
                     score_obj.score = score_obj.score + question.marks
                     score_obj.save()
-                    
+
+                # Update Score on selecting wrong answer  
                 else:
                     score_obj,created = Score.objects.get_or_create(user_game=user_game)
                     score_obj.score = score_obj.score
                     score_obj.save()
 
+                    # make user game deactive on selecting wrong answer
                     user_game.is_active=False
                     user_game.save()
                     messages.success(request,'Wrong Answer. You are Terminated')
+
+                    
                     return redirect('trivia_game:score')
 
                        
@@ -97,10 +102,10 @@ def join_game(request):
         context={
             'form':form,
             'question':question,
-            'a':answers[0],
-            'b':answers[1],
-            'c':answers[2],
-            'd':answers[3],
+            # 'a':answers[0],
+            # 'b':answers[1],
+            # 'c':answers[2],
+            # 'd':answers[3],
             'user_answers':Answer.objects.filter(question=question).annotate(ans=Count('useranswer', Q(useranswer__user_game__game=game))),
             'user':request.user.username,
             'question_id':question.id if question else Question.objects.all().first().id,
