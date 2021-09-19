@@ -8,8 +8,6 @@ __pycache__/
 ngrok
 .vscode
 /log/
-media
-assets
 *.env
 virtualenvs/
 local_settings.py
