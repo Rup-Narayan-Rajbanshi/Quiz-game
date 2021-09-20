@@ -3,7 +3,7 @@ from .base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['rup-game.herokuapp.com']
+ALLOWED_HOSTS = ['rup-game-realtime.herokuapp.com']
 
 
 # DATABASES = {
@@ -18,11 +18,11 @@ ALLOWED_HOSTS = ['rup-game.herokuapp.com']
 DATABASES = {
     'default':{
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd5jtvnmjaesr1q',
-        'USER': 'mvlalvzyzqnyrd',
-        'HOST': 'ec2-18-214-238-28.compute-1.amazonaws.com',
+        'NAME': 'dfg7cflmaov4g0',
+        'USER': 'iwnkxrlqaguocz',
+        'HOST': 'ec2-34-228-154-153.compute-1.amazonaws.com',
         'PORT': 5432,
-        'PASSWORD':'d13184981df7ff2462e5829009af1b41ccc781e121b57ebb95b522825f4cd623',
+        'PASSWORD':'d21e23d60a341d4104e8e128adbe284e8c33a643aee4ff4d14d8e75d53115e10',
     }
 }
 
