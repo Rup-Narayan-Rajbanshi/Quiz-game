@@ -44,7 +44,7 @@ def join_game(request):
     form = SubmitAnswerForm()
     if user_question_answer_obj:
         question = user_question_answer_obj.question
-        answers = Answer.objects.filter(question=question)
+        answers = Answer.objects.select_related('question').filter(question=question)
         right_answer = answers.filter(is_correct=True).first()
         next_question = Question.objects.filter(id__gt=question.id).order_by('id').first()
 
@@ -65,31 +65,31 @@ def join_game(request):
                 AnswerChoiceThread(user, question).start()
 
                 # Update Score on selecting right answer
+                score_obj, created = Score.objects.get_or_create(user_game=user_game)
                 if user_question_answer_obj.answer == right_answer:
-                    score_obj, created = Score.objects.get_or_create(user_game=user_game)
                     score_obj.score = score_obj.score + question.marks
                     score_obj.save()
 
                 # Update Score on selecting wrong answer
                 else:
-                    score_obj, created = Score.objects.get_or_create(user_game=user_game)
                     score_obj.score = score_obj.score
                     score_obj.save()
 
                     # make user game deactive on selecting wrong answer
-                    user_game.is_active = False
-                    user_game.save()
+                    user_game.update(is_active = False)
+                    # user_game.save()
                     messages.success(request, 'Wrong Answer. You are Terminated')
-
                     return redirect('trivia_game:score')
    
                 try:
+                    # create new user_answer obj to ask for next round
                     user_question_answer_obj, created = UserAnswer.objects.get_or_create(user_game=user_game, question=next_question)            
-                except UserAnswer.DoesNotExist:
+                except:
                     messages.success(request, 'Congratulation You are a Winner')
-                    score_obj.is_winner = True
-                    score_obj.save()
-                    UserGame.objects.filter(game=game).update(is_active=False)
+                    # score_obj.is_winner = True
+                    score_obj.update(is_winner=True)
+                    user_game.update(is_active=False)
+                    # UserGame.objects.filter(game=game).update(is_active=False)
                     game = game.update(is_active=False)
                     return redirect('trivia_game:score')
 

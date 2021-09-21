@@ -3,7 +3,7 @@ from helpers.models import BaseModel
 
 
 class Game(BaseModel):
-    no_of_participants = models.IntegerField(default=2)
+    no_of_participants = models.IntegerField(default=3)
     is_active = models.BooleanField(default=True)
     is_housefull = models.BooleanField(default=False)
 
