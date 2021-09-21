@@ -6,7 +6,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['rup-game.herokuapp.com']
 
-SECRET_KEY = 'django-insecure-4*z_grdw(&znvcp$cme@zh$^w)%9pvk(v9ad055lfp3_%*l7i1'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 CHANNEL_LAYERS = {
     'default': {
