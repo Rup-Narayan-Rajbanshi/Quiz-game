@@ -17,3 +17,4 @@ class Score(BaseModel):
     @staticmethod
     def calculate_score(score_obj, marks=None):
         return score_obj.score + marks
+        
