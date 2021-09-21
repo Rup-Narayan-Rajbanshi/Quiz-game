@@ -12,5 +12,7 @@
 10. To play quiz in real time redis server has to be run in the background.
 11. Install docker and run ' docker run -p 6379:6379 -d redis:5'
 12. Register Users and Join to play the game.
+
+Note : .env file has to be added.
  
  # game-redis branch is for the deployment purpose.
