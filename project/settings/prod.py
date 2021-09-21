@@ -2,7 +2,7 @@
 from .base import *
 # from decouple import config
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['rup-game.herokuapp.com']
 
