@@ -1,9 +1,21 @@
 from .base import *
-# from decouple import config
+from decouple import config
 
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+SECRET_KEY = config('SECRET_KEY')
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
+        },
+        # 'ROUTING': 'project.routing.channel_routing',
+    }
+}
 
 
 DATABASES = {
@@ -13,8 +25,17 @@ DATABASES = {
     }
 }
 
-# # add this
-# import dj_database_url
-# db_from_env = dj_database_url.config()
-# DATABASES['default'].update(db_from_env)
-# DATABASES['default']['CONN_MAX_AGE'] = 500
+
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    # '/var/www/static/',
+]
+
+STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR),"static_cdn")
+
+MEDIA_URL= '/media_cdn/'
+ 
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR),"media_cdn")
