@@ -1,17 +1,17 @@
 from .base import *
-# from decouple import config
+from decouple import config
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['rup-game.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
-SECRET_KEY = 'django-insecure-4*z_grdw(&znvcp$cme@zh$^w)%9pvk(v9ad055lfp3_%*l7i1'
+SECRET_KEY = config('SECRET_KEY')
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+            'hosts': [('localhost', 6379)],
         },
         # 'ROUTING': 'project.routing.channel_routing',
     }
@@ -19,16 +19,23 @@ CHANNEL_LAYERS = {
 
 
 DATABASES = {
-    'default':{
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'davtf4n85sjcri',
-        'USER': 'ehgtbainjluitp',
-        'HOST': 'ec2-54-158-247-97.compute-1.amazonaws.com',
-        'PORT': 5432,
-        'PASSWORD':'fbc991a465ae43bc4c8ad77c6d2af8f36d5368916b7305ac13086838754beb31',
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
 
-STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR),"staticfiles")
+
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    # '/var/www/static/',
+]
+
+STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR),"static_cdn")
+
+MEDIA_URL= '/media_cdn/'
+ 
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR),"media_cdn")

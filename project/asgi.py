@@ -19,7 +19,10 @@ from django.urls import path
 
 from trivia_game.consumers import *
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings.prod')
+
+env=os.environ.get('ENV')
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings.env')
 
 ws_patterns = [
     path('ws/new/',NewConsumers.as_asgi())
