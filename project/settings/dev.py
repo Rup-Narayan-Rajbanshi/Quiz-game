@@ -1,18 +1,21 @@
 from .base import *
 # from decouple import config
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['rup-game.herokuapp.com']
 
+SECRET_KEY = 'django-insecure-4*z_grdw(&znvcp$cme@zh$^w)%9pvk(v9ad055lfp3_%*l7i1'
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+        # 'ROUTING': 'project.routing.channel_routing',
+    }
+}
 
 
 DATABASES = {
@@ -26,8 +29,6 @@ DATABASES = {
     }
 }
 
-# # add this
-# import dj_database_url
-# db_from_env = dj_database_url.config()
-# DATABASES['default'].update(db_from_env)
-# DATABASES['default']['CONN_MAX_AGE'] = 500
+
+STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR),"staticfiles")
+STATIC_URL = '/static/'
