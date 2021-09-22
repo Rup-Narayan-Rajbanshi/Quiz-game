@@ -4,7 +4,7 @@ from trivia_game.models.user_game import UserGame
 
 
 class Score(BaseModel):
-    user_game = models.ForeignKey(UserGame, on_delete=models.CASCADE)
+    user_game = models.ForeignKey(UserGame, on_delete=models.CASCADE, related_name='score')
     score = models.IntegerField(default=0)
     is_winner = models.BooleanField(default=False)
 
