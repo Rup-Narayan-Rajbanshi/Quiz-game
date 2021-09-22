@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/user/login/')
 def score(request):
+    """
+        get the score of the user.
+    """
     scores = Score.objects.select_related('user_game').filter(user_game__user=request.user)
 
     for score in scores:
@@ -14,14 +17,11 @@ def score(request):
         game_max_score = Score.objects.select_related('user_game').filter(user_game__game=game).aggregate(Max('score'))
         if game_max_score['score__max'] == score.score:
             if not game.is_active:
-                score.is_winner = True
-                score.save()
+                score.update(is_winner=True)
             else:
-                score.is_winner = False
-                score.save()
+                score.update(is_winner=False)
         else:
-            score.is_winner = False
-            score.save()
+            score.update(is_winner=False)
     context = {
         'scores': scores
     }
