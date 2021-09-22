@@ -7,9 +7,9 @@ from .answer import Answer
 
 
 class UserAnswer(BaseModel):
-    user_game = models.ForeignKey(UserGame, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True, blank=True)
+    user_game = models.ForeignKey(UserGame, on_delete=models.CASCADE, related_name='useranswer')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='useranswer')
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True, blank=True, related_name='useranswer')
     is_correct = models.BooleanField(default=False)
 
     def __str__(self):
