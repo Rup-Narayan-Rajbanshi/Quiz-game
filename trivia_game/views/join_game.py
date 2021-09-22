@@ -17,6 +17,11 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/user/login/')
 def join_game(request):
+    """
+    Joins the user to the game and allows the user to get the question
+    and also submit the answer
+
+    """
     user = request.user
     game_exist = Game.objects.filter(is_active=True, is_housefull=False).exists()
     user_active_in_existing_game = UserGame.objects.filter(user=user, is_active=True).exists()
@@ -77,7 +82,6 @@ def join_game(request):
 
                     # make user game deactive on selecting wrong answer
                     user_game.update(is_active = False)
-                    # user_game.save()
                     messages.success(request, 'Wrong Answer. You are Terminated')
                     return redirect('trivia_game:score')
    
@@ -86,10 +90,8 @@ def join_game(request):
                     user_question_answer_obj, created = UserAnswer.objects.get_or_create(user_game=user_game, question=next_question)            
                 except:
                     messages.success(request, 'Congratulation You are a Winner')
-                    # score_obj.is_winner = True
                     score_obj.update(is_winner=True)
                     user_game.update(is_active=False)
-                    # UserGame.objects.filter(game=game).update(is_active=False)
                     game = game.update(is_active=False)
                     return redirect('trivia_game:score')
 
