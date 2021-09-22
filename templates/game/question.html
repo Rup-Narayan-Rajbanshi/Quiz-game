@@ -15,7 +15,6 @@
         <div class="col-lg-4 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
             <table cellpadding="10">
                 <tr>
-                    <th>Sl.No</th>
                     <th>Quistion No.</th>
                     <th>Choice a</th>
                     <th>Choice b</th>
@@ -55,11 +54,12 @@
         }
 
         if (data.payload){
+            console.log(data)
             if (data.payload.question_id==question_id){
                 addQuistionData(data.payload)
                 setTimeout(function() {
                     console.log('Running Delay')
-                    $('#question_data').fadeOut();}, 20000); // <-- time in milpseconds
+                    $('#question_data').fadeOut();}, 30000); // <-- time in milpseconds
                 }
             }
         
@@ -95,7 +95,6 @@
 
     function addChoiceData(data){
         var html =`
-                    <td></td>
                     <td>${data.question_order}</td>
                     <td>${data.answer_count_a}</td>
                     <td>${data.answer_count_b}</td>

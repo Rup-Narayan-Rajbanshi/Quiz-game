@@ -2,6 +2,7 @@ from django.db import models
 from helpers.models import BaseModel
 from .question import Question
 
+
 class Answer(BaseModel):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.CharField(max_length=1000)
@@ -9,3 +10,4 @@ class Answer(BaseModel):
 
     def __str__(self):
         return self.text
+        

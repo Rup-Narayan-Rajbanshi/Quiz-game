@@ -5,7 +5,6 @@ from trivia_game.models.question import Question
 from trivia_game.models.answer import Answer
 from trivia_game.models.user_answer import UserAnswer
 from trivia_game.models.score import Score
-
 import nested_admin
 
 
@@ -14,23 +13,12 @@ class AnswerInline(nested_admin.NestedTabularInline):
     extra = 4
     max_num = 4
 
-# class QuestionInline(nested_admin.NestedTabularInline):
-#     model = Question
-#     inlines = [AnswerInline,]
-#     extra = 19
 
 class QuistionAdmin(nested_admin.NestedModelAdmin):
-    inlines = [AnswerInline,]
+    inlines = [AnswerInline, ]
 
-# class UserAnswerInline(admin.TabularInline):
-#     model = UserAnswer
-
-
-# class UserGameAdmin(admin.ModelAdmin):
-#     inlines = [UserAnswerInline,]
 
 admin.site.register(Question, QuistionAdmin)
-# admin.site.register(UserGame, UserGameAdmin)
 admin.site.register(Game)
 admin.site.register(UserGame)
 admin.site.register(UserAnswer)

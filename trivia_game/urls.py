@@ -7,5 +7,5 @@ app_name = 'trivia_game'
 
 urlpatterns = [
     path('join/', join_game, name='join-game'),
-    path('score/',score, name='score'),
+    path('score/', score, name='score'),
 ]
