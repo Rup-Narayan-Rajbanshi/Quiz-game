@@ -2,7 +2,7 @@
 
 1. Pull the project to your local system from the development branch of of the git repository in some directory.
 2. Point to the project directory which contains manage.py file from the Terminal.
-3. Create a vierual environment and activate it.
+3. Create a virtual environment and activate it.
 4. Install the requirements from the ' pip install -r requirements.txt ' command.
 5. Run python manage.py runserver
 6. Request http://127.0.0.1:8000/ and Check if home page appears in the browser.
