@@ -1,3 +1,19 @@
+# Game Description
+The game consists of multiple rounds. In each round players are presented a question, a
+choice of answers, and have to select one answer within the allotted time (10 seconds or
+so). Players that chose a correct answer advance to the next round. Those who chose the
+wrong answers are eliminated. The game continues until there’s only one winner left.
+
+# Features:
+- The application runs in completely automatic mode - i.e no admin
+intervention should be required to start the game (once a minimum number of
+players have joined) or advance the game to the next round.
+- The application allows running multiple games simultaneously.
+- The application allows a reasonably large number of players to participate
+in each game (think hundreds).
+- The application displays statistics about player choices at the end of each
+round (how many players have chosen each answer).
+
 # Steps to run a project Locally.
 
 1. Pull the project to your local system from the development branch of of the git repository in some directory.
