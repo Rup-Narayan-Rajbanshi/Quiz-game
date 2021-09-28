@@ -29,6 +29,6 @@ round (how many players have chosen each answer).
 11. Install docker and run ' docker run -p 6379:6379 -d redis:5'
 12. Register Users and Join to play the game.
 
-Note : .env file has to be added.
+Note : .env file has to be added that contains secret key(ping me)
  
  # game-redis branch is for the deployment purpose on Heroku.
