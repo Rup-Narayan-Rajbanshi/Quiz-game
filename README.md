@@ -31,4 +31,4 @@ round (how many players have chosen each answer).
 
 Note : .env file has to be added.
  
- # game-redis branch is for the deployment purpose.
+ # game-redis branch is for the deployment purpose on Heroku.
